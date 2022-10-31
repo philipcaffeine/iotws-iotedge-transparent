@@ -111,30 +111,84 @@ Port	Protocol
 
 On your IoT Edge device, 
 Backup file
-cp /etc/aziot/config.toml /etc/aziot/config.toml.back
-Copy template file 
-cp ./config.toml.edge.template ./config.toml
 
+```hcl
+```
+
+Copy template file 
+
+```hcl
+cp /etc/aziot/config.toml.edge.template /etc/aziot/config.toml
+```
+
+```hcl
 vi ./config.toml
-hostname = “phil-iotedge01.southeastasia.cloudapp.azure.com”　# need to set for certificate generation, cannot mismatch 
+
+hostname = "phil-edge01.southeastasia.cloudapp.azure.com"　# need to set for certificate generation, cannot mismatch 
+```
+
 Find the trust_bundle_cert parameter. Uncomment this line and provide the file URI to the root CA certificate file on your device.
+
+```hcl
 trust_bundle_cert = "file:///home/philadmin/keys_certs/azure-iot-test-only.root.ca.cert.pem"
+```
+
 
 Find the [edge_ca] section of the file. Uncomment the three lines in this section and provide the file URIs to your certificate and key files as values for the following properties:
 cert: device CA certificate
 pk: device CA private key
+
+```hcl
 [edge_ca]
-cert = "file:///home/philadmin/keys_certs/iot-edge-device-edgeca-phil-iotedge01-full-chain.cert.pem"      # file URI
-pk = "file:///home/philadmin/keys_certs/iot-edge-device-edgeca-phil-iotedge01.key.pem"              # file URI, or...
+cert = "file:///home/philadmin/keys_certs/iot-edge-device-edgeca-phil-edge01-full-chain.cert.pem"      # file URI
+pk = "file:///home/philadmin/keys_certs/iot-edge-device-edgeca-phil-edge01.key.pem"              # file URI, or...
+
+```
 
 Add provision section config.toml 
+
+```hcl
 [provisioning]
 source = "manual"
-connection_string = "HostName=phil-ws-iothub01.azure-devices.net;DeviceId=phil-iotedge02;SharedAccessKey=lnewRjJ7B2LtSf3ZdOIPE5arY/55hIZXkYLQVpMcTfo=" 
+connection_string = "HostName=xxx.azure-devices.net;DeviceId=phil-edge01;SharedAccessKey=xxxxxx" 
+```
 
+```hcl
 sudo iotedge config apply
 
+iotedge logs -f edgeAgent
+```
+
 Note:  sudo iotedge system stop && sudo docker rm -f $(docker ps -aq) && sudo iotedge config apply　# use this command, if to change hostname
+
+
+<6> 2022-10-31 05:41:51.695 +00:00 [INF] - Initializing Edge Agent.
+<6> 2022-10-31 05:41:51.798 +00:00 [INF] - Version - 1.4.2.61356014 (bb9a26162c4c88b3ef9a50d33632ab78bd4247d6)
+<6> 2022-10-31 05:41:51.798 +00:00 [INF] -
+        █████╗ ███████╗██╗   ██╗██████╗ ███████╗
+       ██╔══██╗╚══███╔╝██║   ██║██╔══██╗██╔════╝
+       ███████║  ███╔╝ ██║   ██║██████╔╝█████╗
+       ██╔══██║ ███╔╝  ██║   ██║██╔══██╗██╔══╝
+       ██║  ██║███████╗╚██████╔╝██║  ██║███████╗
+       ╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝
+
+ ██╗ ██████╗ ████████╗    ███████╗██████╗  ██████╗ ███████╗
+ ██║██╔═══██╗╚══██╔══╝    ██╔════╝██╔══██╗██╔════╝ ██╔════╝
+ ██║██║   ██║   ██║       █████╗  ██║  ██║██║  ███╗█████╗
+ ██║██║   ██║   ██║       ██╔══╝  ██║  ██║██║   ██║██╔══╝
+ ██║╚██████╔╝   ██║       ███████╗██████╔╝╚██████╔╝███████╗
+ ╚═╝ ╚═════╝    ╚═╝       ╚══════╝╚═════╝  ╚═════╝ ╚══════╝
+
+<6> 2022-10-31 05:41:51.800 +00:00 [INF] - ModuleUpdateMode: NonBlocking
+<6> 2022-10-31 05:41:51.828 +00:00 [INF] - Experimental features configuration: {"Enabled":false,"DisableCloudSubscriptions":false}
+<6> 2022-10-31 05:41:51.935 +00:00 [INF] - Installing certificates [CN=iot-edge-1027.ca:11/26/2022 06:49:54],[CN=Azure_IoT_Hub_Intermediate_Cert_Test_Only:11/26/2022 06:49:31],[CN=Azure_IoT_Hub_CA_Cert_Test_Only:11/26/2022 06:49:30],[CN=Azure_IoT_Hub_CA_Cert_Test_Only:11/26/2022 06:49:30] to Root
+<6> 2022-10-31 05:41:52.042 +00:00 [INF] - Starting metrics listener on Host: *, Port: 9600, Suffix: metrics
+<6> 2022-10-31 05:41:52.051 +00:00 [INF] - Updating performance metrics every 05m:00s
+<6> 2022-10-31 05:41:52.054 +00:00 [INF] - Started operation Get system resources
+
+
+
+
 
 ### 4. Config IoT Edge – create hub route
 
