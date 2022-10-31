@@ -1,11 +1,17 @@
 
 ### Tutorial Create transparent gateway
 
-1. Configure IoT Edge as Transparent Gateway 
-2. List of parameters:
+#### 1. Configure IoT Edge as Transparent Gateway 
+#### 2. Set up the device CA certificate
+#### 3. Configure IoT Edge – config.toml
+#### 4. Config IoT Edge – create hub route
+#### 5. Upload test root cert to IOT Hub Certificate
+#### 6. Prepare downstream device – authentication to hub
 
 
-###　1. Configure IoT Edge as Transparent Gateway 
+------------------
+
+### 1. Configure IoT Edge as Transparent Gateway 
 
 A Linux or Windows device with IoT Edge installed. - If you do not have a device ready, you can create one in an Azure virtual machine. Follow the steps in Deploy your first IoT Edge module to a virtual Linux device to create an IoT Hub, create a virtual machine, and configure the IoT Edge runtime.
 
@@ -58,7 +64,7 @@ sudo iotedge check
 ```
 
 
-###　2. Set up the device CA certificate
+### 2. Set up the device CA certificate
 
 https://learn.microsoft.com/en-us/azure/iot-edge/how-to-create-test-certificates?view=iotedge-2020-11&tabs=windows
 
@@ -112,14 +118,14 @@ For example:
 ```hcl
 mkdir keys_certs
 
-wget -O azure-iot-test-only.root.ca.cert.pem --no-check-certificate "https://onedrive.live.com/download?cid=584B560B6F9BE190&resid=584B560B6F9BE190%21337902&authkey=AP9KiYEeKOLLFxg"
+wget -O azure-iot-test-only.root.ca.cert.pem --no-check-certificate "https://onedrive.live.com/download?cid=584B560B6F9BE190&resid=584B560B6F9BE190%21337902&authkey=AP9KiYEeKOLLFxg-1-"
 
 ---IoT Edge 01
 
-wget -O iot-edge-device-edgeca-philedge01-full-chain.cert.pem --no-check-certificate "https://onedrive.live.com/download?cid=584B560B6F9BE190&resid=584B560B6F9BE190%21337900&authkey=AKKECqoqHJjLMZE"
+wget -O iot-edge-device-edgeca-philedge01-full-chain.cert.pem --no-check-certificate "https://onedrive.live.com/download?cid=584B560B6F9BE190&resid=584B560B6F9BE190%21337900&authkey=AKKECqoqHJjLMZE-1-"
 
 
-wget -O iot-edge-device-edgeca-philedge01.key.pem --no-check-certificate "https://onedrive.live.com/download?cid=584B560B6F9BE190&resid=584B560B6F9BE190%21337899&authkey=AEW0xNg3NVjzaEQ"
+wget -O iot-edge-device-edgeca-philedge01.key.pem --no-check-certificate "https://onedrive.live.com/download?cid=584B560B6F9BE190&resid=584B560B6F9BE190%21337899&authkey=AEW0xNg3NVjzaEQ-1-"
 
 ```
 
@@ -139,7 +145,7 @@ Port	Protocol
 ```
 
 
-###　3. Configure IoT Edge – config.toml
+### 3. Configure IoT Edge – config.toml
 
 
 On your IoT Edge device, Backup file
@@ -229,7 +235,6 @@ Name: allDownstreamToHub
 Value: FROM /messages/* WHERE NOT IS_DEFINED ($connectionModuleId) INTO $upstream
 ```
 
-
 ### 5. Upload test root cert to IOT Hub Certificate
 
 1. In the Azure portal, navigate to your IoT hub. 
@@ -237,6 +242,8 @@ Value: FROM /messages/* WHERE NOT IS_DEFINED ($connectionModuleId) INTO $upstrea
 2. Go to "Certificate" on left navigator of IoT Hub
 
 3. Upload "azure-iot-test-only.root.ca.cert.pem" and make as verified 
+
+
 
 
 ### 6. Prepare downstream device – authentication to hub
@@ -261,7 +268,6 @@ device name: phil-leaf01
 Test you python app client to Hub through Edge gateway X.509 CA-signed authentication
 
 https://learn.microsoft.com/en-us/azure/iot-edge/how-to-create-test-certificates?view=iotedge-2020-11&tabs=windows#create-downstream-device-certificates
-
 
 Depending on your preferred language, review samples of how X.509 certificates can be referenced in IoT applications:
 
