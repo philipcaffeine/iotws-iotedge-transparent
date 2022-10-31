@@ -244,14 +244,32 @@ Value: FROM /messages/* WHERE NOT IS_DEFINED ($connectionModuleId) INTO $upstrea
 3. Upload "azure-iot-test-only.root.ca.cert.pem" and make as verified 
 
 
-
-
 ### 6. Prepare downstream device – authentication to hub
 
-1. Create a new leaf device in your IoT Hub, 
+1. Create a new leaf device in your IoT Hub
 2. Select "X.509 CA Signed"
 3. Select it’s parent device (the IoT Edge)
 
+4. Prepare your downstream device execution env
+
+Windows, import root CA to downstream device:  
+
+Open cmd/ps shell, run as administrator: 
+
+```hcl
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
+import-certificate your_local_folder\_keys_and_certs\self-signed-iotedge-20221031\certs\azure-iot-test-only.root.ca.cert.pem -certstorelocation cert:\LocalMachine\root
+```
+
+You can also install certificates using the certlm utility:
+
+In the Start menu, search for and select Manage computer certificates. A utility called certlm opens.
+Navigate to Certificates - Local Computer > Trusted Root Certification Authorities.
+Right-click Certificates and select All Tasks > Import. The certificate import wizard should launch.
+Follow the steps as directed and import certificate file <path>/azure-iot-test-only.root.ca.cert.pem. When completed, you should see a "Successfully imported" message.
+
+
+5. Generate client cert
 
 Switch to PS working directory: ~ workingdir\ to create the new device certificate.
 
