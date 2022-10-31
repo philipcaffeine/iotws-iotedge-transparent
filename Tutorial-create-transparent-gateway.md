@@ -252,25 +252,24 @@ Value: FROM /messages/* WHERE NOT IS_DEFINED ($connectionModuleId) INTO $upstrea
 
 4. Prepare your downstream device execution env
 
-Windows, import root CA to downstream device:  
+    For Windows, import root CA to downstream device. Open cmd/ps shell, run as administrator: 
 
-Open cmd/ps shell, run as administrator: 
+    ```hcl
+    Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
+    import-certificate your_local_folder\_keys_and_certs\self-signed-iotedge-20221031\certs\azure-iot-test-only.root.ca.cert.pem -certstorelocation cert:\LocalMachine\root
+    ```
+    For Ubuntu Linux client:　　https://ubuntu.com/server/docs/security-trust-store
 
-```hcl
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
-import-certificate your_local_folder\_keys_and_certs\self-signed-iotedge-20221031\certs\azure-iot-test-only.root.ca.cert.pem -certstorelocation cert:\LocalMachine\root
-```
-For Ubuntu Linux client:　　https://ubuntu.com/server/docs/security-trust-store
+    Installing a certificate in PEM form
+    Assuming a PEM-formatted root CA certificate is in local-ca.crt, follow the steps below to install it.
 
-Installing a certificate in PEM form
-Assuming a PEM-formatted root CA certificate is in local-ca.crt, follow the steps below to install it.
+    Note: It is important to have the .crt extension on the file, otherwise it will not be processed.
 
-Note: It is important to have the .crt extension on the file, otherwise it will not be processed.
-
-$ sudo apt-get install -y ca-certificates
-$ sudo cp local-ca.crt /usr/local/share/ca-certificates
-$ sudo update-ca-certificates
-
+    ```hcl
+    $ sudo apt-get install -y ca-certificates
+    $ sudo cp local-ca.crt /usr/local/share/ca-certificates
+    $ sudo update-ca-certificates
+    ```
 
 
 5. Generate client cert
