@@ -13,13 +13,13 @@ import asyncio
 messages_to_send = 100
 
 async def main():
-    hostname = "phil-edge01.southeastasia.cloudapp.azure.com"
+    hostname = "xxxxx-edge01.southeastasia.cloudapp.azure.com"
     # The device that has been created on the portal using X509 CA signing or Self signing capabilities
     device_id = "phil-leaf01"
 
     x509 = X509(
-        cert_file= "C:\\Users\\yec\\OneDrive\\dev_cloud\\vs_code\\_common_iot\\01-device_sdk\\_keys_and_certs\\self-signed-iotedge-20221031\\certs\\iot-device-phil-leaf01-full-chain.cert.pem",
-        key_file= "C:\\Users\\yec\\OneDrive\\dev_cloud\\vs_code\\_common_iot\\01-device_sdk\\_keys_and_certs\\self-signed-iotedge-20221031\\private\\iot-device-phil-leaf01.key.pem",
+        cert_file= "your_local\\_keys_and_certs\\self-signed-iotedge-20221031\\certs\\iot-device-phil-leaf01-full-chain.cert.pem",
+        key_file= "your_local\\_keys_and_certs\\self-signed-iotedge-20221031\\private\\iot-device-phil-leaf01.key.pem",
         pass_phrase=""
     )
 

@@ -260,13 +260,17 @@ Open cmd/ps shell, run as administrator:
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
 import-certificate your_local_folder\_keys_and_certs\self-signed-iotedge-20221031\certs\azure-iot-test-only.root.ca.cert.pem -certstorelocation cert:\LocalMachine\root
 ```
+For Ubuntu Linux client:　　https://ubuntu.com/server/docs/security-trust-store
 
-You can also install certificates using the certlm utility:
+Installing a certificate in PEM form
+Assuming a PEM-formatted root CA certificate is in local-ca.crt, follow the steps below to install it.
 
-In the Start menu, search for and select Manage computer certificates. A utility called certlm opens.
-Navigate to Certificates - Local Computer > Trusted Root Certification Authorities.
-Right-click Certificates and select All Tasks > Import. The certificate import wizard should launch.
-Follow the steps as directed and import certificate file <path>/azure-iot-test-only.root.ca.cert.pem. When completed, you should see a "Successfully imported" message.
+Note: It is important to have the .crt extension on the file, otherwise it will not be processed.
+
+$ sudo apt-get install -y ca-certificates
+$ sudo cp local-ca.crt /usr/local/share/ca-certificates
+$ sudo update-ca-certificates
+
 
 
 5. Generate client cert
@@ -277,7 +281,6 @@ Switch to PS working directory: ~ workingdir\ to create the new device certifica
 New-CACertsDevice "phil-leaf01"
 ```
 
-Password: “xxxx”
 
 ```hcl
 device name: phil-leaf01
