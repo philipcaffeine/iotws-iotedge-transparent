@@ -26,15 +26,6 @@ sudo apt-get install moby-engine
 ```
 
 ```hcl
-vi /etc/docker/daemon.json
-
-{
-      "log-driver": "local"
-}
-
-```
-
-```hcl
 sudo apt-get update
 sudo apt-get install aziot-edge
 ```
@@ -43,9 +34,13 @@ sudo apt-get install aziot-edge
 #### Prepare and Install IoT Edge Cont’ 
 
 Create IOT Edge device on IoT Hub, get connection string 
-HostName=phil-ws-iothub01.azure-devices.net;DeviceId=phil-iotedge01;SharedAccessKey=98HanxyPyJM1AjpubxAIj+xccoP8ZJjGuyGuQm+scX4=
 
-HostName=phil-ws-iothub01.azure-devices.net;DeviceId=phil-iotedge02;SharedAccessKey=lnewRjJ7B2LtSf3ZdOIPE5arY/55hIZXkYLQVpMcTfo=
+Sample as below: 
+
+```hcl
+HostName=phil-ws-iothub-01.azure-devices.net;DeviceId=phil-edge01;SharedAccessKey=xxxx
+```
+
 
 **** IMPORTANT ****
 DO NOT START NEW IOTEDGE until you modify all cert path in config.toml, or the new iot edge will wrongly generate wrong server certificate 
@@ -67,31 +62,38 @@ sudo iotedge check
 
 https://learn.microsoft.com/en-us/azure/iot-edge/how-to-create-test-certificates?view=iotedge-2020-11&tabs=windows
 
+Have the following files ready:
+
+Root CA certificate
+Device CA certificate
+Device CA private key
+
 Move cert files to VM	
 
 ####  How to Make Direct Link of OneDrive Files | Mars Translation
+https://www.marstranslation.com/blog/how-to-make-direct-link-of-onedrive-files
 
-Onedrive >> embed  >> get and change URL
-Make changes in the URL. Just replace 'embed' with   'download'. After making changes, you URL will be look like below,
+Onedrive >> embed  >> get and change URL. Make changes in the URL. Just replace 'embed' with   'download'. After making changes, you URL will be look like below,
 
 For example: 
+
+```hcl
 mkdir keys_certs
 
-wget -O azure-iot-test-only.root.ca.cert.pem --no-check-certificate "https://onedrive.live.com/download?cid=584B560B6F9BE190&resid=584B560B6F9BE190%21330311&authkey=AKAW5MB_AIjallk"
+wget -O azure-iot-test-only.root.ca.cert.pem --no-check-certificate "https://onedrive.live.com/download?cid=584B560B6F9BE190&resid=584B560B6F9BE190%21337877&authkey=AOeLedZOLpAbtWQ"
 
 ---IoT Edge 01
-wget -O iot-edge-device-edgeca-phil-iotedge01.key.pem --no-check-certificate "https://onedrive.live.com/download?cid=584B560B6F9BE190&resid=584B560B6F9BE190%21329422&authkey=AEeTFCzlfv-oVl0"
 
-wget -O iot-edge-device-edgeca-phil-iotedge01-full-chain.cert.pem --no-check-certificate "https://onedrive.live.com/download?cid=584B560B6F9BE190&resid=584B560B6F9BE190%21329423&authkey=AF-GVM7cZ7Fy52U"
+wget -O iot-edge-device-edgeca-phil-edge01.key.pem --no-check-certificate "https://onedrive.live.com/download?cid=584B560B6F9BE190&resid=584B560B6F9BE190%21337878&authkey=AJo39JBqR5XTGeg"
 
---- IoT Edge 02 
-wget -O iot-edge-device-edgeca-phil-iotedge02.key.pem --no-check-certificate "https://onedrive.live.com/download?cid=584B560B6F9BE190&resid=584B560B6F9BE190%21329435&authkey=AKOkHHWLu0UjCrQ" 
+wget -O iot-edge-device-edgeca-phil-edge01-full-chain.cert.pem --no-check-certificate "https://onedrive.live.com/download?cid=584B560B6F9BE190&resid=584B560B6F9BE190%21337879&authkey=AJfhz-2Y51iBhK4"
 
-wget -O iot-edge-device-edgeca-phil-iotedge02-full-chain.cert.pem --no-check-certificate "https://onedrive.live.com/download?cid=584B560B6F9BE190&resid=584B560B6F9BE190%21329437&authkey=AKyEs-B0A0vNG6E"
+```
 
 
 ####  Grant inbound access from leaf device to IoT Edge
 
+```hcl
 Add inbound firewall rule of IOT Edge VM 
 
 Port	Protocol
@@ -100,7 +102,8 @@ Port	Protocol
 
 5671	AMQP / AMQP+WS
 
-443	HTTPS
+443	    HTTPS
+```
 
 
 ###　3. Configure IoT Edge – config.toml
